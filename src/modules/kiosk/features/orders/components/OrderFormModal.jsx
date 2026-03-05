@@ -1,6 +1,7 @@
-// src/features/orders/components/OrderFormModal.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ORDER_TYPES } from "..";
+import { useAuth } from "@/modules/auth/context/AuthContext";
+import { validateOrderForm } from "../hook/validateOrderForm";
 
 export default function OrderFormModal({
   isOpen,
@@ -8,14 +9,29 @@ export default function OrderFormModal({
   onSubmit,
   isSubmitting,
 }) {
+  const { user, profile } = useAuth(); // Obtenemos el usuario logueado
+  const isStaff =
+    user && ["admin", "kitchen", "waiter"].includes(profile?.role);
   const [form, setForm] = useState({
-    order_type: "dine_in",
-    guest_name: "",
+    order_type: isStaff ? "dine_in" : "pickup",
+    guest_name: user && profile.role === "client" ? profile?.full_name : "",
     guest_phone: "",
     address: "",
     table_number: "",
     notes: "",
   });
+
+  useEffect(() => {
+    // cuando el usuario se loguea/desloguea o cambia de perfil
+    if (user && profile.role === "client") {
+      setForm((f) => ({
+        ...f,
+        guest_name: profile.full_name || "",
+      }));
+    } else {
+      setForm((f) => ({ ...f, guest_name: "" }));
+    }
+  }, [user, profile]);
 
   if (!isOpen) return null;
 
@@ -36,18 +52,9 @@ export default function OrderFormModal({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!guest_name.trim()) {
-      alert("El nombre del cliente es obligatorio");
-      return;
-    }
-
-    if (order_type === "dine_in" && !table_number.trim()) {
-      alert("Debes ingresar el número de mesa");
-      return;
-    }
-
-    if (order_type === "delivery" && !address.trim()) {
-      alert("Debes ingresar la dirección");
+    const error = validateOrderForm(form);
+    if (error) {
+      alert(error);
       return;
     }
 
@@ -57,12 +64,16 @@ export default function OrderFormModal({
       guest_phone,
       address: order_type === "delivery" ? address : null,
       table_number: order_type === "dine_in" ? table_number : null,
+      created_by: user?.id || null,
+      waiter_name: isStaff ? profile?.full_name : "Cliente Online",
+      user_id: user?.id || null,
+      guest_email: user?.email || null,
       notes,
     });
 
     // Resetea el formulario
     setForm({
-      order_type: "dine_in",
+      order_type: isStaff ? "dine_in" : "pickup",
       guest_name: "",
       guest_phone: "",
       address: "",
@@ -82,6 +93,9 @@ export default function OrderFormModal({
           <h3 className="text-xl font-serif font-bold text-chile">
             Detalles del pedido
           </h3>
+          <p className="text-xs text-charcoal/60">
+            {isStaff && `Atendido por: ${profile?.full_name || "Personal"}`}
+          </p>
           <button
             onClick={onClose}
             className="text-charcoal hover:text-chile transition cursor-pointer"
@@ -99,13 +113,28 @@ export default function OrderFormModal({
             </p>
             <div className="flex gap-2 flex-wrap">
               {ORDER_TYPES.map((type) => {
+                // 1. Verificamos si es "Comer aquí"
+                const isDineIn = type.id === "dine_in";
+
+                // 2. Si es "Comer aquí", verificamos si el usuario tiene permiso
+                // Si no es "Comer aquí", se muestra siempre.
+                if (isDineIn && !isStaff) return null;
+
                 const active = order_type === type.id;
+
                 return (
                   <button
                     key={type.id}
                     type="button"
                     onClick={() =>
-                      setForm((prev) => ({ ...prev, order_type: type.id }))
+                      setForm((prev) => ({
+                        ...prev,
+                        order_type: type.id,
+                        // Limpiamos campos cruzados para que la data en la DB sea limpia
+                        table_number:
+                          type.id === "dine_in" ? prev.table_number : "",
+                        address: type.id === "delivery" ? prev.address : "",
+                      }))
                     }
                     className={`px-4 py-2 rounded-full text-sm font-medium border transition cursor-pointer ${
                       active
@@ -135,18 +164,25 @@ export default function OrderFormModal({
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-charcoal mb-1">
-                Teléfono
-              </label>
-              <input
-                type="tel"
-                className="w-full rounded-xl border border-cream px-3 py-2 text-sm bg-softwhite focus:outline-none focus:ring-2 focus:ring-mostaza"
-                value={guest_phone}
-                onChange={handleChange("guest_phone")}
-                placeholder="Opcional"
-              />
-            </div>
+            {/* Solo mostramos el teléfono si NO es "Comer aquí" */}
+            {order_type !== "dine_in" && (
+              <div>
+                <label className="block text-sm font-medium text-charcoal mb-1">
+                  Teléfono
+                </label>
+                <input
+                  type="tel"
+                  className="w-full rounded-xl border border-cream px-3 py-2 text-sm bg-softwhite focus:outline-none focus:ring-2 focus:ring-mostaza"
+                  value={guest_phone}
+                  onChange={handleChange("guest_phone")}
+                  placeholder={
+                    order_type === "delivery"
+                      ? "Teléfono para entrega"
+                      : "Teléfono para avisar cuando esté listo"
+                  }
+                />
+              </div>
+            )}
           </section>
 
           {/* Campos condicionales */}
