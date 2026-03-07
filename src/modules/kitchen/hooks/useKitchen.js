@@ -1,10 +1,8 @@
 import { supabase } from "@/lib/supabase";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useRealtimeSync } from "@/utils/useRealtimeSync";
+import { useQuery } from "@tanstack/react-query";
 
 export const getOrders = () => {
-  const queryClient = useQueryClient();
-
   const query = useQuery({
     queryKey: ["kitchens"],
     queryFn: async () => {
@@ -21,26 +19,7 @@ export const getOrders = () => {
     },
   });
 
-  useEffect(() => {
-    const channel = supabase
-      .channel("orders-realtime")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT", // solo nuevas órdenes
-          schema: "public",
-          table: "orders",
-        },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ["kitchens"] });
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [queryClient]);
+  useRealtimeSync("orders", ["kitchens"]);
 
   return query;
 };

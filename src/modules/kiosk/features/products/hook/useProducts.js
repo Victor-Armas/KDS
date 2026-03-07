@@ -1,19 +1,28 @@
 import { supabase } from "@/lib/supabase";
+import { useRealtimeSync } from "@/utils/useRealtimeSync";
 import { useQuery } from "@tanstack/react-query";
 
 export const useProducts = (categoryId = null) => {
-  return useQuery({
-    queryKey: ["products", categoryId], //Recibe categoryId por el filtro
+  const query = useQuery({
+    queryKey: ["products", categoryId],
     queryFn: async () => {
-      let query = supabase.from("products").select("*").order("name");
+      let queryBuilder = supabase
+        .from("products")
+        .select("*")
+        .eq("is_available", true) // Solo lo que hay en el comal
+        .order("name");
 
       if (categoryId) {
-        query = query.eq("category_id", categoryId);
+        queryBuilder = queryBuilder.eq("category_id", categoryId);
       }
 
-      const { data, error } = await query;
+      const { data, error } = await queryBuilder;
       if (error) throw error;
       return data ?? [];
     },
   });
+
+  useRealtimeSync("products", ["products"]);
+
+  return query;
 };

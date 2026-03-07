@@ -11,7 +11,7 @@ export default function AdminLayout() {
     useAdminNavigation(profile);
 
   return (
-    <div className="min-h-screen bg-cream flex font-sans">
+    <div className="h-screen bg-cream flex font-sans overflow-hidden">
       <Sidebar
         menu={filteredMenu}
         location={location}
@@ -27,10 +27,10 @@ export default function AdminLayout() {
 
         <section className="flex-1 overflow-y-auto relative bg-cream">
           {/* Capa del patrón */}
-          <div className="absolute inset-0 z-0 bg-tacos-pattern bg-[length:200px_200px] bg-repeat opacity-20" />
+          <div className="absolute inset-0 z-0 bg-tacos-pattern bg-size-[200px_200px] bg-repeat opacity-20" />
 
           {/* Contenido */}
-          <div className="relative z-10 p-8">
+          <div className="relative z-30 p-8">
             <Outlet />
           </div>
         </section>
