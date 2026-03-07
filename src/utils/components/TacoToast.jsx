@@ -2,30 +2,26 @@ import React from "react";
 import { toast } from "sonner";
 
 // 1. Imports de imágenes (Vite los procesa correctamente)
-import taquitoSuccess from "@/img/taquitoLike.png";
-import chileError from "@/img/chileError.png";
-import aguacateInfo from "@/img/aguacateInfo.png";
-import taquitoBasura from "@/img/taquitoBasura.png";
 
 const toastConfig = {
   success: {
     border: "border-hoja",
-    image: taquitoSuccess,
+    image: "/img/taquitoLike.png",
     animation: "animate-bounce",
   },
   error: {
     border: "border-chile",
-    image: chileError,
+    image: "/img/chileError.png",
     animation: "animate-shake",
   },
   info: {
     border: "border-mostaza",
-    image: aguacateInfo,
+    image: "/img/aguacateInfo.png",
     animation: "animate-pulse",
   },
   delete: {
     border: "border-hoja",
-    image: taquitoBasura,
+    image: "/img/taquitoBasura.png",
     animation: "animate-pulse",
   },
 };

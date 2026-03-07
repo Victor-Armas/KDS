@@ -16,7 +16,7 @@ export default {
         sans: ["Inter", "sans-serif"],
       },
       backgroundImage: {
-        "tacos-pattern": "url('/src/assets/Patróndetacosychiles2.png')",
+        "tacos-pattern": "url('/img/Patróndetacosychiles2.png')",
       },
       keyframes: {
         shake: {
