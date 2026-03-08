@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/modules/auth/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RequireRole({ roles = [], children }) {
   const { user, profile, loading } = useAuth();

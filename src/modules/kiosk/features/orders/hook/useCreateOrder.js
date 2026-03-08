@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { useCart } from "../../cart/context/CartContext";
-import { useAuth } from "@/modules/auth/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export function useCreateOrder() {
   const { clearCart } = useCart();
@@ -40,7 +40,7 @@ export function useCreateOrder() {
           // Si no es staff, guardamos que fue un pedido online/cliente
           waiter_name: isStaff
             ? profile?.full_name || "Staff"
-            : "Pedido Cliente",
+            : "Pedido Online",
         })
         .select("id, order_number, created_at")
         .single();

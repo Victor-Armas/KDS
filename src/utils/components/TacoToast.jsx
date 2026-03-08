@@ -1,8 +1,6 @@
 import React from "react";
 import { toast } from "sonner";
 
-// 1. Imports de imágenes (Vite los procesa correctamente)
-
 const toastConfig = {
   success: {
     border: "border-hoja",

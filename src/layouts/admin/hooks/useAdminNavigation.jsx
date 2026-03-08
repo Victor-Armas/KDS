@@ -7,9 +7,10 @@ import {
   Users,
   Settings,
 } from "lucide-react";
+import { useUI } from "@/context/UIContext";
 
 export const useAdminNavigation = (profile) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isSidebarOpen, setIsSidebarOpen } = useUI();
   const location = useLocation();
 
   const menuItems = [

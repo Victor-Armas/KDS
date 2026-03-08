@@ -32,7 +32,7 @@ export default function CartDrawer({ cartOpen, closeCart }) {
 
       {/* Drawer */}
       <aside
-        className={`fixed top-0 right-0 h-full w-150 bg-softwhite shadow-2xl flex flex-col z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-full lg:w-120  bg-softwhite shadow-2xl flex flex-col z-50 transform transition-transform duration-300 ${
           cartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

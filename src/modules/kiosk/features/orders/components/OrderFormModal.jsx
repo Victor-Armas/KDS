@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ORDER_TYPES } from "..";
-import { useAuth } from "@/modules/auth/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { validateOrderForm } from "../hook/validateOrderForm";
 
 export default function OrderFormModal({

@@ -1,7 +1,7 @@
 import { Menu } from "lucide-react";
 
 export const AdminHeader = ({ profile, onMenuClick }) => (
-  <header className="h-16 bg-softwhite border-b border-cream flex items-center justify-between px-4 lg:px-8 shrink-0 shadow-md shadow-charcoal/50 relative z-20">
+  <header className="h-16 bg-softwhite border-b border-cream flex items-center justify-between px-4 lg:px-8 shrink-0 shadow-md shadow-charcoal/50 relative z-10">
     <button
       className="p-2 lg:hidden text-charcoal hover:bg-cream/50 rounded-lg transition-colors"
       onClick={onMenuClick}

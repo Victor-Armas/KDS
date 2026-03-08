@@ -1,4 +1,4 @@
-import { useAuth } from "@/modules/auth/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import CartButton from "@/modules/kiosk/features/cart/components/CartButton";
 import LogoutButton from "@/utils/components/LogoutButton";
 import { LogOut, UserCircle } from "lucide-react";

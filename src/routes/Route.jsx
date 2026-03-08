@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "@/modules/auth/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import RequireRole from "@/modules/admin/role/RequireRole";
 
 import KioskLayout from "../layouts/KioskLayout";
@@ -11,6 +11,8 @@ import AdminLayout from "@/layouts/admin/AdminLayout";
 import ProductsPage from "@/modules/admin/products/page/ProductsPage";
 import Unauthorized from "@/modules/admin/Unauthorized";
 import OrdersPage from "@/modules/admin/orders/page/OrdersPage";
+import OrderDashboardSimulation from "@/modules/admin/orders/page/OrderDashboardSimulation";
+
 
 export default function AppRoute() {
   const { user, profile, loading } = useAuth();
@@ -67,6 +69,20 @@ export default function AppRoute() {
             </RequireRole>
           }
         />
+
+         <Route
+          path="/admin/users"
+          element={
+            <RequireRole roles={["admin", "kitchen", "waiter"]}>
+              <OrderDashboardSimulation/>
+            </RequireRole>
+          }
+        />
+
+       
+
+        
+        
 
         {/* Ejemplo: Una ruta para que el mesero vea órdenes sin ser la vista de cocina */}
         <Route

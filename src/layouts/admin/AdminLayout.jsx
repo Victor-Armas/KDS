@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { useAuth } from "@/modules/auth/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { Sidebar } from "./components/Sidebar";
-
 import { AdminHeader } from "./components/AdminHeader";
 import { useAdminNavigation } from "./hooks/useAdminNavigation";
 
@@ -11,26 +10,32 @@ export default function AdminLayout() {
     useAdminNavigation(profile);
 
   return (
-    <div className="h-screen bg-cream flex font-sans overflow-hidden">
+    <div className="flex h-screen bg-cream font-sans overflow-hidden">
+      {/* SIDEBAR */}
       <Sidebar
         menu={filteredMenu}
         location={location}
         isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
+        setIsSidebarOpen={setIsSidebarOpen}
       />
 
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {/* CONTENIDO PRINCIPAL */}
+      <main className="flex flex-col flex-1 min-w-0 min-h-0 relative">
+        {/* HEADER */}
         <AdminHeader
           profile={profile}
           onMenuClick={() => setIsSidebarOpen(true)}
         />
 
-        <section className="flex-1 overflow-y-auto relative bg-cream">
-          {/* Capa del patrón */}
-          <div className="absolute inset-0 z-0 bg-tacos-pattern bg-size-[200px_200px] bg-repeat opacity-20" />
+        {/* ÁREA DE PÁGINAS */}
+        <section className="flex-1 min-h-0 relative bg-cream">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 z-0 bg-tacos-pattern bg-size-[200px_200px] bg-repeat opacity-10 pointer-events-none" />
 
-          {/* Contenido */}
-          <div className="relative z-30 p-8">
+          {/* CONTENEDOR CON SCROLL: 
+            Permite que las páginas como Productos fluyan naturalmente.
+          */}
+          <div className="relative z-10 h-full overflow-y-auto p-4 lg:p-8">
             <Outlet />
           </div>
         </section>
