@@ -128,7 +128,7 @@ export default function ModalAddProduct({ onClose, categories, initialData }) {
                   required
                   type="text"
                   placeholder="Ej. Tacos al Pastor"
-                  className="w-full px-4 py-3 bg-cream/20 border border-cream rounded-2xl outline-none"
+                  className="w-full px-4 py-3 bg-white border border-cream rounded-2xl outline-none"
                 />
               </div>
 
@@ -142,7 +142,7 @@ export default function ModalAddProduct({ onClose, categories, initialData }) {
                     value={formData.category_id}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-cream/20 border border-cream rounded-2xl outline-none"
+                    className="w-full px-4 py-3 bg-white border border-cream rounded-2xl outline-none"
                   >
                     <option value="">¿Qué es?</option>
                     {categories?.map((cat) => (
@@ -163,12 +163,12 @@ export default function ModalAddProduct({ onClose, categories, initialData }) {
                     required
                     type="number"
                     step="0.01"
-                    className="w-full px-4 py-3 bg-cream/20 border border-cream rounded-2xl outline-none"
+                    className="w-full px-4 py-3 bg-white border border-cream rounded-2xl outline-none"
                   />
                 </div>
               </div>
 
-              <div className="p-4 bg-cream/10 rounded-2xl border border-cream/50 flex items-center justify-between">
+              <div className="p-4 bg-white rounded-2xl border border-cream/50 flex items-center justify-between">
                 <div>
                   <span className="block text-sm font-bold text-charcoal">
                     ¿Disponible?
@@ -202,7 +202,7 @@ export default function ModalAddProduct({ onClose, categories, initialData }) {
                   value={formData.description}
                   onChange={handleChange}
                   rows="4"
-                  className="w-full px-4 py-3 bg-cream/20 border border-cream rounded-2xl outline-none resize-none"
+                  className="w-full px-4 py-3 bg-white border border-cream rounded-2xl outline-none resize-none"
                 />
               </div>
             </div>

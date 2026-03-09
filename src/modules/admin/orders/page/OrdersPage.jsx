@@ -19,9 +19,6 @@ export default function OrderPage() {
   } = useOrdersLogic();
 
   return (
-    /* MÓVIL (por defecto): 'relative', sin padding extra (hereda el p-4 de AdminLayout) y fluye hacia abajo.
-      LAPTOP (lg): 'absolute inset-0' para secuestrar el espacio, 'lg:p-8' para recuperar el padding y 'lg:overflow-hidden' para frenar el scroll global.
-    */
     <div className="relative lg:absolute lg:inset-0 flex flex-col gap-6 lg:p-8 lg:overflow-hidden z-20">
       <OrderHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
@@ -32,8 +29,6 @@ export default function OrderPage() {
             Por Confirmar ({pendingOrders.length})
           </h2>
 
-          {/* MÓVIL: Quitamos el h-[35vh] y el overflow-y-auto. Crece con su contenido.
-              LAPTOP: Activa el lg:flex-1 y lg:overflow-y-auto para scroll interno. */}
           <div className="lg:flex-1 lg:overflow-y-auto pr-2 custom-scrollbar">
             <div className="flex flex-col gap-3">
               {pendingOrders.map((order) => (
@@ -54,12 +49,12 @@ export default function OrderPage() {
             En Proceso ({activeOrders.length})
           </h2>
 
-          {/* Igual que la columna 1: liberamos el scroll en móvil */}
+          {/* Igual que la columna 1: se libera el scroll en móvil */}
           <div className="lg:flex-1 lg:overflow-y-auto pr-2 custom-scrollbar">
             <div
               className={`grid gap-4 pb-10 transition-all duration-300 ${
                 isSidebarOpen
-                  ? "grid-cols-1"
+                  ? "grid-cols-1 2xl:grid-cols-2"
                   : "grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
               }`}
             >
@@ -84,7 +79,7 @@ export default function OrderPage() {
           transform flex flex-col
           lg:top-0 lg:h-full
           xl:relative xl:translate-x-0 xl:z-0 
-          xl:w-[400px] xl:shadow-xl xl:rounded-[2.5rem] 
+          xl:w-100 xl:shadow-xl xl:rounded-[2.5rem] 
           xl:border xl:border-cream xl:shrink-0
           ${selectedOrder ? "translate-x-0" : "translate-x-full"}
           `}

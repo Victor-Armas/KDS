@@ -30,12 +30,12 @@ export default function AdminLayout() {
         {/* ÁREA DE PÁGINAS */}
         <section className="flex-1 min-h-0 relative bg-cream">
           {/* Background Pattern */}
-          <div className="absolute inset-0 z-0 bg-tacos-pattern bg-size-[200px_200px] bg-repeat opacity-10 pointer-events-none" />
+          <div className="absolute inset-0 z-0 bg-tacos-claro pointer-events-none  bg-repeat bg-size-[500px] opacity-50 min-h-screen" />
 
           {/* CONTENEDOR CON SCROLL: 
             Permite que las páginas como Productos fluyan naturalmente.
           */}
-          <div className="relative z-10 h-full overflow-y-auto p-4 lg:p-8">
+          <div className="relative z-10 h-full overflow-y-auto">
             <Outlet />
           </div>
         </section>

@@ -11,8 +11,7 @@ import AdminLayout from "@/layouts/admin/AdminLayout";
 import ProductsPage from "@/modules/admin/products/page/ProductsPage";
 import Unauthorized from "@/modules/admin/Unauthorized";
 import OrdersPage from "@/modules/admin/orders/page/OrdersPage";
-import OrderDashboardSimulation from "@/modules/admin/orders/page/OrderDashboardSimulation";
-
+import PuntoDeVenta from "@/modules/PuntoDeVenta/page/PuntoDeVenta";
 
 export default function AppRoute() {
   const { user, profile, loading } = useAuth();
@@ -69,27 +68,17 @@ export default function AppRoute() {
             </RequireRole>
           }
         />
-
-         <Route
-          path="/admin/users"
-          element={
-            <RequireRole roles={["admin", "kitchen", "waiter"]}>
-              <OrderDashboardSimulation/>
-            </RequireRole>
-          }
-        />
-
-       
-
-        
-        
-
-        {/* Ejemplo: Una ruta para que el mesero vea órdenes sin ser la vista de cocina */}
-        <Route
-          path="/admin/orders-list"
-          element={<div>Lista de pedidos para meseros</div>}
-        />
       </Route>
+
+      {/* 4. Punto de venta: Interfaz independiente (Sin AdminLayout) */}
+      <Route
+        path="/punto-venta"
+        element={
+          <RequireRole roles={["admin", "waiter"]}>
+            <PuntoDeVenta />
+          </RequireRole>
+        }
+      />
 
       <Route path="/" element={<Navigate to="/kiosk" />} />
 

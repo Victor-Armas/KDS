@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -6,6 +5,7 @@ import {
   ClipboardList,
   Users,
   Settings,
+  ShoppingBasket,
 } from "lucide-react";
 import { useUI } from "@/context/UIContext";
 
@@ -19,6 +19,12 @@ export const useAdminNavigation = (profile) => {
       icon: <LayoutDashboard size={20} />,
       path: "/admin",
       roles: ["admin"],
+    },
+    {
+      label: "Punto de Venta",
+      icon: <ShoppingBasket size={20} />,
+      path: "/admin/punto-venta",
+      roles: ["admin", "waiter", "kitchen"],
     },
     {
       label: "Órdenes",
