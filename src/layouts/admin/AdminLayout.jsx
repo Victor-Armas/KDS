@@ -30,7 +30,7 @@ export default function AdminLayout() {
         {/* ÁREA DE PÁGINAS */}
         <section className="flex-1 min-h-0 relative bg-cream">
           {/* Background Pattern */}
-          <div className="absolute inset-0 z-0 bg-tacos-claro pointer-events-none  bg-repeat bg-size-[500px] opacity-50 min-h-screen" />
+          <div className="absolute inset-0 z-0 bg-tacos-claro pointer-events-none  bg-repeat bg-size-[500px] opacity-15 min-h-screen" />
 
           {/* CONTENEDOR CON SCROLL: 
             Permite que las páginas como Productos fluyan naturalmente.

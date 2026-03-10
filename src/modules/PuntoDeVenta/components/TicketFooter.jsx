@@ -1,5 +1,6 @@
 import React from "react";
 import { Sparkles, Utensils } from "lucide-react";
+import { useRestaurantSettings } from "@/hooks/useRestaurantSettings";
 
 export default function TicketFooter({
   cartTotal,
@@ -7,6 +8,8 @@ export default function TicketFooter({
   isSubmitting,
   confirmOrder,
 }) {
+  const { data: settings } = useRestaurantSettings();
+  const isOpen = settings?.is_open ?? true;
   return (
     <div className="p-4 bg-black border-t border-white/10 shrink-0 shadow-[0_-20px_50px_rgba(0,0,0,0.4)]">
       <div className="flex justify-between items-end mb-8">
@@ -28,19 +31,23 @@ export default function TicketFooter({
       <div className="grid grid-cols-2 gap-4">
         <button
           onClick={() => confirmOrder(true)}
-          disabled={isCartEmpty}
+          disabled={isCartEmpty || !isOpen}
           className="py-4 bg-[#e63946] disabled:opacity-30 text-white rounded-4xl font-black text-sm uppercase tracking-[0.2em] shadow-2xl active:scale-95 transition-all flex justify-center items-center gap-3 cursor-pointer"
         >
           <Sparkles size={22} />
-          COBRAR
+          {!isOpen ? "Cerrado" : "COBRAR"}
         </button>
         <button
           onClick={() => confirmOrder(false)}
-          disabled={isCartEmpty || isSubmitting}
+          disabled={isCartEmpty || isSubmitting || !isOpen}
           className="py-4 bg-white/5 disabled:opacity-30 text-[#2a9d8f] border-2 border-[#2a9d8f]/30 rounded-4xl font-black text-sm uppercase tracking-[0.2em] active:scale-95 transition-all flex justify-center items-center gap-3 cursor-pointer"
         >
           <Utensils size={22} />
-          {isSubmitting ? "Enviando..." : `Cocina $${cartTotal.toFixed(2)}`}
+          {!isOpen
+            ? "Cerrado"
+            : isSubmitting
+              ? "Enviando..."
+              : `Cocina $${cartTotal.toFixed(2)}`}
         </button>
       </div>
     </div>

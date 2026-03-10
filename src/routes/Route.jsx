@@ -2,16 +2,27 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import RequireRole from "@/modules/admin/role/RequireRole";
 
-import KioskLayout from "../layouts/KioskLayout";
-import KioskPage from "../modules/kiosk/page/KioskPage";
-import KitchenPage from "@/modules/kitchen/page/KitchenPage";
-import LoginPage from "@/modules/auth/page/LoginPage";
+// Layouts
 
 import AdminLayout from "@/layouts/admin/AdminLayout";
+
+// Online (pedidos en línea)
+import OnlinePage from "@/modules/online/pages/OnlinePage";
+import OrderStatusPage from "@/modules/online/pages/OrderStatusPage";
+import OrderHistoryPage from "@/modules/online/pages/OrderHistoryPage";
+
+// Admin
 import ProductsPage from "@/modules/admin/products/page/ProductsPage";
-import Unauthorized from "@/modules/admin/Unauthorized";
 import OrdersPage from "@/modules/admin/orders/page/OrdersPage";
+
+// Kitchen & POS
+import KitchenPage from "@/modules/kitchen/page/KitchenPage";
 import POSPage from "@/modules/PuntoDeVenta/page/POSPage";
+
+// Auth
+import LoginPage from "@/modules/auth/page/LoginPage";
+import Unauthorized from "@/modules/admin/Unauthorized";
+import OnlineLayout from "@/modules/online/components/layout/OnlineLayout";
 
 export default function AppRoute() {
   const { user, profile, loading } = useAuth();
@@ -21,17 +32,23 @@ export default function AppRoute() {
 
   return (
     <Routes>
+      {/* ── AUTH ─────────────────────────────────────────────── */}
       <Route
         path="/login"
         element={!user ? <LoginPage /> : <Navigate to="/admin" />}
       />
 
-      {/* 1. KIOSKO: Acceso Público */}
-      <Route element={<KioskLayout />}>
-        <Route path="/kiosk" element={<KioskPage />} />
+      {/* ── ONLINE (pedidos en línea) ─────────────────────────── */}
+      <Route element={<OnlineLayout />}>
+        <Route path="/online" element={<OnlinePage />} />
+        <Route path="/online/order/:id" element={<OrderStatusPage />} />
+        <Route
+          path="/online/historial"
+          element={user ? <OrderHistoryPage /> : <Navigate to="/login" />}
+        />
       </Route>
 
-      {/* 2. COCINA: Interfaz independiente (Sin AdminLayout) */}
+      {/* ── COCINA ───────────────────────────────────────────── */}
       <Route
         path="/kitchen"
         element={
@@ -41,7 +58,17 @@ export default function AppRoute() {
         }
       />
 
-      {/* 3. PANEL ADMINISTRATIVO: Con Sidebar y Header */}
+      {/* ── PUNTO DE VENTA ───────────────────────────────────── */}
+      <Route
+        path="/admin/punto-venta"
+        element={
+          <RequireRole roles={["admin", "waiter"]}>
+            <POSPage />
+          </RequireRole>
+        }
+      />
+
+      {/* ── ADMIN ────────────────────────────────────────────── */}
       <Route
         path="/admin"
         element={
@@ -50,7 +77,6 @@ export default function AppRoute() {
           </RequireRole>
         }
       >
-        {/* Ruta Panel administrativo Gestion de Productos  */}
         <Route
           path="/admin/products"
           element={
@@ -59,7 +85,6 @@ export default function AppRoute() {
             </RequireRole>
           }
         />
-
         <Route
           path="/admin/orders"
           element={
@@ -70,18 +95,9 @@ export default function AppRoute() {
         />
       </Route>
 
-      {/* 4. Punto de venta: Interfaz independiente (Sin AdminLayout) */}
-      <Route
-        path="/punto-venta"
-        element={
-          <RequireRole roles={["admin", "waiter"]}>
-            <POSPage />
-          </RequireRole>
-        }
-      />
-
-      <Route path="/" element={<Navigate to="/kiosk" />} />
-
+      {/* ── REDIRECTS ────────────────────────────────────────── */}
+      <Route path="/" element={<Navigate to="/online" />} />
+      {/* <Route path="/kiosk" element={<Navigate to="/online" replace />} /> */}
       <Route path="/unauthorized" element={<Unauthorized />} />
     </Routes>
   );

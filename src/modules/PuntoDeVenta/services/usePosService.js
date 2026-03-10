@@ -54,7 +54,7 @@ export const useCreateOrder = () => {
             status: "preparing",
             guest_name: orderData.guestName,
             table_number: orderData.tableNumber,
-            is_paid: orderData.isPaid,
+            payment_status: orderData.isPaid,
           },
         ])
         .select()

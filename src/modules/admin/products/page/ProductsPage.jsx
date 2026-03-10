@@ -1,4 +1,3 @@
-import { useCategories } from "@/modules/kiosk/features/categories/hook/useCategories";
 import Spinner from "@/components/ui/Spinner";
 import { useState } from "react";
 import { useAdminProducts } from "../hooks/useAdminProducts";
@@ -9,6 +8,7 @@ import ProductTable from "../components/ProductTable";
 import ProductPagination from "../components/ProductPagination";
 import ModalAddProduct from "../components/ModalAddProduct";
 import { useProductMutations } from "../hooks/useProductMutations";
+import { useCategories } from "@/modules/online/hooks/useMenu";
 
 export default function ProductsPage() {
   const { deleteMutation } = useProductMutations();
