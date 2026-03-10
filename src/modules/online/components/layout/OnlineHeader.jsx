@@ -11,7 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import { useTheme } from "../../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext.jsx";
 import LogoutButton from "@/components/ui/LogoutButton";
 import TrackOrderModal from "../order/TrackOrderModal";
 
