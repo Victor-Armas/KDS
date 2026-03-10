@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { ThemeProvider } from "../../context/Themecontext";
-import { CartProvider } from "../../context/CartContext";
+import { ThemeProvider } from "../../context/Themecontext.jsx";
+import { CartProvider } from "../../context/CartContext.jsx";
 
 export default function OnlineLayout() {
   return (
