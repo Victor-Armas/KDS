@@ -1,5 +1,5 @@
-import { supabase } from "@/lib/supabase";
-import { notify } from "@/utils/components/TacoToast";
+import { supabase } from "@/services/supabase";
+import { notify } from "@/components/ui/TacoToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useProductMutations = () => {

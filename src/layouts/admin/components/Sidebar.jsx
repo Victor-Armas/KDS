@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { LogOut, ChevronLeft, ChevronRight } from "lucide-react";
-import LogoutButton from "@/utils/components/LogoutButton";
+import LogoutButton from "@/components/ui/LogoutButton";
 
 export const Sidebar = ({ menu, location, isOpen, setIsSidebarOpen }) => (
   <>

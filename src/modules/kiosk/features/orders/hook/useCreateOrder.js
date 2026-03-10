@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/services/supabase";
 import { useCart } from "../../cart/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
@@ -70,6 +70,7 @@ export function useCreateOrder() {
       queryClient.invalidateQueries({
         queryKey: ["kitchens"],
       });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
   });
   return {

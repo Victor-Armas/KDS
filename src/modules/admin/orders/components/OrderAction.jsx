@@ -40,7 +40,7 @@ export default function OrderAction({ order }) {
       <button
         onClick={handlePrimaryAction}
         disabled={isPending}
-        className={`flex-[2] py-4 flex items-center justify-center gap-2 ${
+        className={`flex-2 py-4 flex items-center justify-center gap-2 ${
           orderPending ? "bg-mostaza" : "bg-hoja"
         } text-white rounded-3xl font-black text-[11px] uppercase tracking-widest shadow-xl transition-all active:scale-95 disabled:opacity-70`}
       >

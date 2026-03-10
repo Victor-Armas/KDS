@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
 import { useAdminOrders } from "./useAdminOrders";
-import { MOCK_ORDERS_DATA } from "./mockOrders";
 
 export function useOrdersLogic() {
   const [selectedOrderId, setSelectedOrderId] = useState(null);

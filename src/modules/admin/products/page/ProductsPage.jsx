@@ -1,5 +1,5 @@
 import { useCategories } from "@/modules/kiosk/features/categories/hook/useCategories";
-import Spinner from "@/utils/components/Spinner";
+import Spinner from "@/components/ui/Spinner";
 import { useState } from "react";
 import { useAdminProducts } from "../hooks/useAdminProducts";
 import { keepPreviousData } from "@tanstack/react-query";

@@ -1,8 +1,7 @@
-import { supabase } from "@/lib/supabase";
-import { notify } from "@/utils/components/TacoToast";
+import { supabase } from "@/services/supabase";
+import { notify } from "@/components/ui/TacoToast";
 import { useRealtimeSync } from "@/utils/useRealtimeSync";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 export const useAdminOrders = () => {
   const query = useQuery({

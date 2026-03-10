@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/services/supabase";
 
 /**
  * Hook para sincronizar tablas de Supabase con React Query en tiempo real.

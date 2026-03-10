@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/services/supabase";
 import { useRealtimeSync } from "@/utils/useRealtimeSync";
 import { useQuery } from "@tanstack/react-query";
 

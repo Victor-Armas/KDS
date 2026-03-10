@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import LogoutButton from "@/utils/components/LogoutButton";
+import LogoutButton from "@/components/ui/LogoutButton";
 import { Clock } from "lucide-react";
 
 export default function HeaderKitchen({ orders }) {

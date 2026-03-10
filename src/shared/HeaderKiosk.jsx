@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import CartButton from "@/modules/kiosk/features/cart/components/CartButton";
-import LogoutButton from "@/utils/components/LogoutButton";
+import LogoutButton from "@/components/ui/LogoutButton";
 import { LogOut, UserCircle } from "lucide-react";
 import { Link } from "react-router-dom"; // Importante para la navegación
 

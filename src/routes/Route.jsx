@@ -11,7 +11,7 @@ import AdminLayout from "@/layouts/admin/AdminLayout";
 import ProductsPage from "@/modules/admin/products/page/ProductsPage";
 import Unauthorized from "@/modules/admin/Unauthorized";
 import OrdersPage from "@/modules/admin/orders/page/OrdersPage";
-import PuntoDeVenta from "@/modules/PuntoDeVenta/page/PuntoDeVenta";
+import POSPage from "@/modules/PuntoDeVenta/page/POSPage";
 
 export default function AppRoute() {
   const { user, profile, loading } = useAuth();
@@ -75,7 +75,7 @@ export default function AppRoute() {
         path="/punto-venta"
         element={
           <RequireRole roles={["admin", "waiter"]}>
-            <PuntoDeVenta />
+            <POSPage />
           </RequireRole>
         }
       />

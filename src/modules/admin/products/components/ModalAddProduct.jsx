@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { X, Save, Loader2 } from "lucide-react";
 import { useProductMutations } from "../hooks/useProductMutations";
 import ImageUploader from "./ImageUploader";
-import { supabase } from "@/lib/supabase";
-import { notify } from "@/utils/components/TacoToast";
+import { supabase } from "@/services/supabase";
+import { notify } from "@/components/ui/TacoToast";
 
 export default function ModalAddProduct({ onClose, categories, initialData }) {
   const isEditing = !!initialData;
