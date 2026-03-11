@@ -121,13 +121,13 @@ export default function OnlinePage() {
             },
             {
               emoji: "📍",
-              title: "Dinos dónde",
-              desc: "Pickup en el local o delivery a tu dirección, tú decides",
+              title: "Elige dónde",
+              desc: "Recógelo en el local o te lo llevamos a tu dirección.",
             },
             {
               emoji: "🔔",
-              title: "Te avisamos",
-              desc: "Recibes una notificación cuando tu pedido esté listo",
+              title: "Dale seguimiento",
+              desc: "Con tu número de orden puedes ver el progreso de tu pedido en tiempo real.",
             },
           ].map((step) => (
             <div

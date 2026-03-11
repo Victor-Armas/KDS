@@ -1,4 +1,4 @@
-import React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function ProductPagination({
   products,
@@ -7,38 +7,57 @@ export default function ProductPagination({
   setCurrentPage,
   pageSize,
 }) {
+  const totalPages = Math.ceil(totalProducts / pageSize);
+  const isFirst = currentPage === 0;
+  const isLast = (currentPage + 1) * pageSize >= totalProducts;
+
+  if (totalPages <= 1) return null;
+
   return (
-    <div className="px-6 py-4  bg-softwhite flex items-center justify-between rounded-2xl border border-cream shadow-sm">
-      <p className="text-sm text-charcoal/50">
+    <div className="flex items-center justify-between px-1">
+      <p className="text-xs text-charcoal/40 dark:text-white/30 font-medium">
         Mostrando{" "}
-        <span className="font-bold text-charcoal">{products.length}</span> de{" "}
-        <span className="font-bold text-charcoal">{totalProducts}</span>{" "}
+        <span className="font-bold text-charcoal/60 dark:text-white/50">
+          {products.length}
+        </span>{" "}
+        de{" "}
+        <span className="font-bold text-charcoal/60 dark:text-white/50">
+          {totalProducts}
+        </span>{" "}
         productos
       </p>
-      <div className="flex gap-2">
+
+      <div className="flex items-center gap-1.5">
         <button
-          onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
-          disabled={currentPage === 0}
-          className={`px-4 py-2 border border-cream rounded-lg text-sm font-medium text-charcoal/70 transition-colors shadow-sm 
+          onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+          disabled={isFirst}
+          className={`p-2 rounded-lg border text-sm font-medium transition-all
+            border-cream dark:border-white/8
             ${
-              currentPage === 0
-                ? "opacity-30 cursor-not-allowed"
-                : "hover:bg-white cursor-pointer"
+              isFirst
+                ? "opacity-30 cursor-not-allowed text-charcoal/40 dark:text-white/30"
+                : "cursor-pointer text-charcoal/60 dark:text-white/50 hover:bg-cream dark:hover:bg-white/5 hover:text-charcoal dark:hover:text-white"
             }`}
         >
-          Anterior
+          <ChevronLeft size={16} />
         </button>
+
+        <span className="px-3 py-1.5 text-xs font-bold text-charcoal/50 dark:text-white/40">
+          {currentPage + 1} / {totalPages}
+        </span>
+
         <button
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-          disabled={(currentPage + 1) * pageSize >= totalProducts}
-          className={`px-4 py-2 bg-white border border-cream rounded-lg text-sm font-medium text-charcoal/70 transition-colors shadow-sm 
+          onClick={() => setCurrentPage((p) => p + 1)}
+          disabled={isLast}
+          className={`p-2 rounded-lg border text-sm font-medium transition-all
+            border-cream dark:border-white/8
             ${
-              (currentPage + 1) * pageSize >= totalProducts
-                ? "opacity-30 cursor-not-allowed"
-                : "hover:bg-cream cursor-pointer"
+              isLast
+                ? "opacity-30 cursor-not-allowed text-charcoal/40 dark:text-white/30"
+                : "cursor-pointer text-charcoal/60 dark:text-white/50 hover:bg-cream dark:hover:bg-white/5 hover:text-charcoal dark:hover:text-white"
             }`}
         >
-          Siguiente
+          <ChevronRight size={16} />
         </button>
       </div>
     </div>

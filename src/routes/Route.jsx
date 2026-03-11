@@ -23,6 +23,9 @@ import POSPage from "@/modules/PuntoDeVenta/page/POSPage";
 import LoginPage from "@/modules/auth/page/LoginPage";
 import Unauthorized from "@/modules/admin/Unauthorized";
 import OnlineLayout from "@/modules/online/components/layout/OnlineLayout";
+import UsersPage from "@/modules/admin/users/page/UsersPage";
+import DashboardPage from "@/modules/admin/dashboard/page/DashboardPage";
+import SettingsPage from "@/modules/admin/settings/page/SettingsPage";
 
 export default function AppRoute() {
   const { user, profile, loading } = useAuth();
@@ -90,6 +93,31 @@ export default function AppRoute() {
           element={
             <RequireRole roles={["admin", "kitchen", "waiter"]}>
               <OrdersPage />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <RequireRole roles={["admin"]}>
+              <UsersPage />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <RequireRole roles={["admin"]}>
+              <DashboardPage />
+            </RequireRole>
+          }
+        />
+
+        <Route
+          path="/admin/settings"
+          element={
+            <RequireRole roles={["admin"]}>
+              <SettingsPage />
             </RequireRole>
           }
         />

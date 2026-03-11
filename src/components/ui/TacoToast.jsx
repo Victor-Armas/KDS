@@ -30,18 +30,18 @@ const TacoToast = ({ title, message, variant = "success" }) => {
   return (
     <div
       className={`
-        flex items-center gap-3 sm:gap-4 
-        bg-softwhite border-l-10 ${config.border} 
-        px-3 py-1 sm:px-4 sm:py-1.5 
-        rounded
-        shadow-xl 
-        /* Responsive Width: Casi pantalla completa en móvil, fijo en desktop */
-        w-[calc(100vw-2rem)] sm:w-auto sm:max-w-sm sm:min-w-[320px] 
-        pointer-events-auto ring-1 ring-charcoal/5 
+        flex items-center gap-3 sm:gap-4
+        bg-softwhite dark:bg-[#1e1c1a]
+        border-l-10 ${config.border}
+        px-3 py-2 sm:px-4 sm:py-2.5
+        rounded-xl
+        shadow-xl dark:shadow-black/40
+        w-[calc(100vw-2rem)] sm:w-auto sm:max-w-sm sm:min-w-[320px]
+        pointer-events-auto
+        ring-1 ring-charcoal/5 dark:ring-white/5
         animate-in fade-in slide-in-from-right-5
       `}
     >
-      {/* IMAGEN: Un poco más pequeña en móvil para ahorrar espacio vertical */}
       <div className="shrink-0">
         <img
           src={config.image}
@@ -50,12 +50,11 @@ const TacoToast = ({ title, message, variant = "success" }) => {
         />
       </div>
 
-      {/* TEXTOS: Ajuste de jerarquía para pantallas pequeñas */}
       <div className="flex flex-col min-w-0 space-y-0.5 sm:space-y-1">
-        <h4 className="font-serif font-bold text-charcoal text-sm sm:text-base leading-tight truncate">
+        <h4 className="font-serif font-bold text-charcoal dark:text-stone-100 text-sm sm:text-base leading-tight truncate">
           {title}
         </h4>
-        <p className="text-charcoal/70 text-[10px] sm:text-xs font-medium leading-tight line-clamp-2">
+        <p className="text-charcoal/60 dark:text-white/50 text-[10px] sm:text-xs font-medium leading-tight line-clamp-2">
           {message}
         </p>
       </div>
@@ -64,24 +63,20 @@ const TacoToast = ({ title, message, variant = "success" }) => {
 };
 
 export const notify = {
-  success: (title, message) => {
+  success: (title, message) =>
     toast.custom(() => (
       <TacoToast variant="success" title={title} message={message} />
-    ));
-  },
-  error: (title, message) => {
+    )),
+  error: (title, message) =>
     toast.custom(() => (
       <TacoToast variant="error" title={title} message={message} />
-    ));
-  },
-  info: (title, message) => {
+    )),
+  info: (title, message) =>
     toast.custom(() => (
       <TacoToast variant="info" title={title} message={message} />
-    ));
-  },
-  delete: (title, message) => {
+    )),
+  delete: (title, message) =>
     toast.custom(() => (
       <TacoToast variant="delete" title={title} message={message} />
-    ));
-  },
+    )),
 };

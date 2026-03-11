@@ -36,11 +36,11 @@ export default function Unauthorized() {
           </button>
 
           <button
-            onClick={() => navigate("/kiosk")}
+            onClick={() => navigate("/online")}
             className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-cream text-charcoal rounded-xl font-medium hover:bg-mostaza/10 hover:border-mostaza/20 transition-all active:scale-95"
           >
             <Home size={18} />
-            Ir al Kiosko
+            Ir a la pagina principal
           </button>
         </div>
 

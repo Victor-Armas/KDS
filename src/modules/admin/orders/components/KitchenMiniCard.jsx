@@ -1,56 +1,52 @@
 import { useOrderTimer } from "@/utils/useOrderTimer";
-import { Clock, Utensils, ShoppingBag, Truck } from "lucide-react";
-
-const TYPE_CONFIG = {
-  dine_in: { icon: Utensils, label: "Mesa", color: "bg-hoja/80" },
-  pickup: { icon: ShoppingBag, label: "Llevar", color: "bg-mostaza/80" },
-  delivery: { icon: Truck, label: "Domicilio", color: "bg-blue-500/80" },
-};
+import { Clock } from "lucide-react";
+import { ORDER_TYPE_CONFIG } from "@/utils/orderUtils";
 
 export default function KitchenMiniCard({ order, isSelected, onClick }) {
-  const { minutes } = useOrderTimer(order.time);
-  const type = TYPE_CONFIG[order.type] || TYPE_CONFIG.dine_in;
+  const { minutes, styles } = useOrderTimer(order.time);
+  const type = ORDER_TYPE_CONFIG[order.type] || ORDER_TYPE_CONFIG.dine_in;
   const Icon = type.icon;
 
   return (
     <div
       onClick={onClick}
-      className={`flex items-center gap-3 px-4 py-3 rounded-2xl border-2 cursor-pointer transition-all bg-white
+      className={`flex items-center gap-3 p-3 rounded-2xl border-2 cursor-pointer transition-all
+        bg-softwhite dark:bg-[#1e1c1a]
         ${
           isSelected
-            ? "border-mostaza shadow-md"
-            : "border-cream hover:border-charcoal/20"
+            ? "border-charcoal dark:border-white/30 shadow-lg"
+            : "border-cream dark:border-white/5 hover:border-charcoal/20 dark:hover:border-white/10"
         }`}
     >
-      {/* Tipo - icono con tamaño cómodo */}
+      {/* Type icon */}
       <div
-        className={`w-8 h-8 rounded-xl ${type.color} flex items-center justify-center shrink-0`}
+        className={`w-9 h-9 rounded-xl ${type.color} text-white flex items-center justify-center shrink-0 shadow-sm`}
       >
-        <Icon size={15} className="text-white" />
+        <Icon size={16} />
       </div>
 
-      {/* Nombre + número */}
-      <div className="flex-1 min-w-0 flex items-center gap-2">
-        <span className="text-[13px] font-black text-charcoal truncate">
-          {order.type === "dine_in" && order.table
-            ? `Mesa ${order.table}`
-            : order.target}
-        </span>
-        <span className="text-[10px] font-bold text-charcoal/30 shrink-0">
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <p className="font-serif font-black text-charcoal dark:text-stone-100 text-sm truncate">
+          {order.table ? `Mesa ${order.table}` : order.target}
+        </p>
+        <p className="text-[10px] font-bold text-charcoal/40 dark:text-white/30 truncate">
           #{order.order_number}
+        </p>
+      </div>
+
+      {/* Timer */}
+      <div className={`px-2.5 py-1 rounded-lg text-xs font-black ${styles}`}>
+        <span className="flex items-center gap-1">
+          <Clock size={11} />
+          {minutes} min
         </span>
       </div>
 
-      {/* Timer + Total */}
-      <div className="flex items-center gap-3 shrink-0">
-        <span className="flex items-center gap-1 text-[11px] font-bold text-charcoal/40">
-          <Clock size={10} />
-          {minutes ? `${minutes}m` : "0m"}
-        </span>
-        <span className="text-[12px] font-black text-charcoal/70">
-          ${order.total}
-        </span>
-      </div>
+      {/* Total */}
+      <p className="text-sm font-black text-charcoal dark:text-stone-100 shrink-0">
+        ${order.total}
+      </p>
     </div>
   );
 }

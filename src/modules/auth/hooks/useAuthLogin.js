@@ -29,8 +29,10 @@ export function useAuthLogin() {
         navigate("/admin");
       } else if (profile?.role === "kitchen") {
         navigate("/kitchen");
+      } else if (profile?.role === "waiter") {
+        navigate("/punto-venta");
       } else {
-        navigate("/kiosk");
+        navigate("/online");
       }
     },
     onError: (error) => {

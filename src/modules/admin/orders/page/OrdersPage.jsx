@@ -26,7 +26,11 @@ export default function OrderPage() {
   const actionableOrders = [...readyOrders, ...onTheWayOrders];
   const totalInProcess = actionableOrders.length + preparingOrders.length;
 
-  // Grid responsivo compartido basado en sidebar
+  const urgentCount = pendingOrders.filter((o) => {
+    const mins = Math.floor((Date.now() - new Date(o.time).getTime()) / 60000);
+    return mins >= 30;
+  }).length;
+
   const gridCols = isSidebarOpen
     ? "grid-cols-1 2xl:grid-cols-2"
     : "grid-cols-1 md:grid-cols-2 lg:grid-cols-2";
@@ -38,7 +42,7 @@ export default function OrderPage() {
         setSearchQuery={setSearchQuery}
         pickupReady={readyOrders.filter((o) => o.type === "pickup").length}
         deliveryOnTheWay={onTheWayOrders.length}
-        pendingCount={pendingOrders.length + awaitingTransferOrders.length}
+        pendingCount={urgentCount}
       />
 
       <div className="flex flex-col lg:flex-row flex-1 min-h-0 gap-6 relative">
@@ -50,7 +54,7 @@ export default function OrderPage() {
           <div className="lg:flex-1 lg:overflow-y-auto pr-2 custom-scrollbar">
             <div className="flex flex-col gap-3">
               {leftColumnOrders.length === 0 ? (
-                <p className="text-[11px] text-charcoal/30 font-bold uppercase tracking-widest px-2 py-6 text-center">
+                <p className="text-[11px] text-charcoal/30 dark:text-white/20 font-bold uppercase tracking-widest px-2 py-6 text-center">
                   Sin órdenes pendientes
                 </p>
               ) : (
@@ -99,8 +103,8 @@ export default function OrderPage() {
             {/* EN COCINA */}
             {preparingOrders.length > 0 && (
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 px-1 mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-charcoal/20 inline-block" />
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 dark:text-white/30 px-1 mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-chile animate-pulse inline-block" />
                   En cocina ({preparingOrders.length})
                 </p>
                 <div
@@ -119,7 +123,7 @@ export default function OrderPage() {
             )}
 
             {totalInProcess === 0 && (
-              <p className="text-[11px] text-charcoal/30 font-bold uppercase tracking-widest px-2 py-6 text-center">
+              <p className="text-[11px] text-charcoal/30 dark:text-white/20 font-bold uppercase tracking-widest px-2 py-6 text-center">
                 Sin órdenes en proceso
               </p>
             )}
@@ -128,14 +132,19 @@ export default function OrderPage() {
 
         {/* DETALLE */}
         <aside
-          className={`fixed inset-y-0 right-0 z-100 
-          w-full sm:w-112.5 bg-white shadow-2xl transition-transform duration-300
-          top-15 h-[calc(100dvh-60px)] transform flex flex-col
-          lg:top-0 lg:h-full
-          xl:relative xl:translate-x-0 xl:z-0 
-          xl:w-100 xl:shadow-xl xl:rounded-[2.5rem] 
-          xl:border xl:border-cream xl:shrink-0
-          ${selectedOrder ? "translate-x-0" : "translate-x-full"}`}
+          className={`fixed inset-y-0 right-0 z-100
+            w-full sm:w-112.5
+            bg-softwhite dark:bg-[#1e1c1a]
+            shadow-2xl dark:shadow-black/60
+            transition-transform duration-300
+            top-15 h-[calc(100dvh-60px)]
+            transform flex flex-col
+            lg:top-0 lg:h-full
+            xl:relative xl:translate-x-0 xl:z-0
+            xl:w-100 xl:shadow-xl xl:rounded-[2.5rem]
+            xl:border xl:border-cream dark:xl:border-white/5
+            xl:shrink-0
+            ${selectedOrder ? "translate-x-0" : "translate-x-full"}`}
         >
           <OrderDetail
             order={selectedOrder}

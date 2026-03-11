@@ -7,18 +7,13 @@ import ProductFilters from "../components/ProductFilters";
 import ProductTable from "../components/ProductTable";
 import ProductPagination from "../components/ProductPagination";
 import ModalAddProduct from "../components/ModalAddProduct";
-import { useProductMutations } from "../hooks/useProductMutations";
 import { useCategories } from "@/modules/online/hooks/useMenu";
 
 export default function ProductsPage() {
-  const { deleteMutation } = useProductMutations();
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("");
-  // 1. Estados para la búsqueda: uno para el texto del input y otro para la consulta real
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-
-  //Estado para el modal
   const [modalAction, setModalAction] = useState(null);
 
   const pageSize = 10;
@@ -27,7 +22,7 @@ export default function ProductsPage() {
     page: currentPage,
     pageSize,
     categoryId: selectedCategory || null,
-    searchTerm: searchQuery, // Enviamos el estado que solo cambia al dar click
+    searchTerm: searchQuery,
     placeholderData: keepPreviousData,
   });
 
@@ -36,7 +31,6 @@ export default function ProductsPage() {
   const products = data?.products ?? [];
   const totalProducts = data?.total ?? 0;
 
-  // Manejadores
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setSearchQuery(searchInput);
@@ -55,24 +49,14 @@ export default function ProductsPage() {
     setCurrentPage(0);
   };
 
-  const openCreate = () => setModalAction({ type: "create" });
-  const openEdit = (product) => setModalAction({ type: "edit", product });
-  const closeSubtitle = () => setModalAction(null);
-
-  const handleDelete = async (id) => {
-    if (window.confirm("¿Estás seguro de eliminar este producto?")) {
-      deleteMutation.mutate(id);
-    }
-  };
-  // Solo mostramos Spinner en la carga inicial pesada
   if (isLoading && !products.length) return <Spinner />;
 
   return (
-    <div className="space-y-6 p-4 lg:p-8">
-      {/* Encabezado */}
-      <HeaderProducts onOpenModal={openCreate} />
-
-      {/* Barra de Filtros y Búsqueda */}
+    <div className="space-y-5 p-4 lg:p-8">
+      <HeaderProducts
+        onOpenModal={() => setModalAction({ type: "create" })}
+        totalProducts={totalProducts}
+      />
 
       <ProductFilters
         handleSearchSubmit={handleSearchSubmit}
@@ -87,12 +71,10 @@ export default function ProductsPage() {
         clearFilters={clearFilters}
       />
 
-      {/* Tabla con efecto de carga sutil */}
       <ProductTable
         products={products}
         isFetching={isFetching}
-        onEdit={openEdit} // Pasamos la función
-        onDelete={handleDelete} // Pasamos la función
+        onEdit={(product) => setModalAction({ type: "edit", product })}
       />
 
       <ProductPagination
@@ -105,9 +87,8 @@ export default function ProductsPage() {
 
       {modalAction && (
         <ModalAddProduct
-          onClose={closeSubtitle}
+          onClose={() => setModalAction(null)}
           categories={categories}
-          // Si existe product, el modal entra en modo edición automáticamente
           initialData={modalAction.product}
         />
       )}
