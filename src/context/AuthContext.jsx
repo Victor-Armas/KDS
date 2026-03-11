@@ -44,6 +44,16 @@ export function AuthProvider({ children }) {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
 
+      // ✅ FIX: Pasar el JWT del usuario a Realtime en cada cambio de sesión.
+      // Sin esto, Realtime usa el JWT anon (corta duración) y desconecta cada ~30s.
+      // Con el access_token del usuario (duración 1 hora), la conexión se mantiene estable.
+      if (session?.access_token) {
+        supabase.realtime.setAuth(session.access_token);
+      } else {
+        // Usuario deslogueado: volver al JWT anon
+        supabase.realtime.setAuth(null);
+      }
+
       if (currentUser) {
         setTimeout(() => {
           fetchProfile(currentUser.id);

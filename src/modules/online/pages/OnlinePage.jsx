@@ -16,6 +16,7 @@ export default function OnlinePage() {
   const [cartOpen, setCartOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
   const [confirmedOrder, setConfirmedOrder] = useState(null);
+  const [formKey, setFormKey] = useState(0);
 
   // Fix 1: cargamos todo una vez, filtramos en memoria
   const { products, isLoading, isError } = useMenu(selectedCategory);
@@ -40,6 +41,7 @@ export default function OnlinePage() {
       const order = await createOrder({ orderData: formData, items });
       clearCart();
       setFormOpen(false);
+      setFormKey((k) => k + 1);
       setConfirmedOrder(order);
     } catch (err) {
       console.error("Error al crear orden:", err);
@@ -207,6 +209,7 @@ export default function OnlinePage() {
 
       {/* ── ORDER FORM ───────────────────────────────────────────────── */}
       <OrderFormModal
+        key={formKey}
         isOpen={formOpen}
         onClose={() => setFormOpen(false)}
         onSubmit={handleSubmitOrder}

@@ -63,7 +63,7 @@ export default function AppRoute() {
 
       {/* ── PUNTO DE VENTA ───────────────────────────────────── */}
       <Route
-        path="/admin/punto-venta"
+        path="/punto-venta"
         element={
           <RequireRole roles={["admin", "waiter"]}>
             <POSPage />

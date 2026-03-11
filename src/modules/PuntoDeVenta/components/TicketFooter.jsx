@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { Sparkles, Utensils } from "lucide-react";
 import { useSettings } from "@/modules/admin/settings/hooks/useSettings";
 
@@ -11,9 +10,6 @@ export default function TicketFooter({
   const { data: settings } = useSettings();
   const isOpen = settings?.is_open ?? true;
 
-  useEffect(() => {
-    console.log("🏪 isOpen cambió:", isOpen);
-  }, [isOpen]);
   return (
     <div className="p-4 bg-black border-t border-white/10 shrink-0 shadow-[0_-20px_50px_rgba(0,0,0,0.4)]">
       <div className="flex justify-between items-end mb-8">
@@ -35,11 +31,11 @@ export default function TicketFooter({
       <div className="grid grid-cols-2 gap-4">
         <button
           onClick={() => confirmOrder(true)}
-          disabled={isCartEmpty || !isOpen}
+          disabled={isCartEmpty || isSubmitting || !isOpen}
           className="py-4 bg-[#e63946] disabled:opacity-30 text-white rounded-4xl font-black text-sm uppercase tracking-[0.2em] shadow-2xl active:scale-95 transition-all flex justify-center items-center gap-3 cursor-pointer"
         >
           <Sparkles size={22} />
-          {!isOpen ? "Cerrado" : "COBRAR"}
+          {!isOpen ? "Cerrado" : isSubmitting ? "Enviando..." : `Cobrar`}
         </button>
         <button
           onClick={() => confirmOrder(false)}
