@@ -4,11 +4,13 @@ import { Sidebar } from "./components/Sidebar";
 import { AdminHeader } from "./components/AdminHeader";
 import { useAdminNavigation } from "./hooks/useAdminNavigation";
 import { AdminThemeProvider } from "./context/AdminThemeContext";
+import { useOrderNotifications } from "@/hooks/useOrderNotifications";
 
 function AdminLayoutInner() {
   const { profile } = useAuth();
   const { isSidebarOpen, setIsSidebarOpen, filteredMenu, location } =
     useAdminNavigation(profile);
+  useOrderNotifications();
 
   return (
     <div className="flex h-screen bg-cream dark:bg-[#0f0e0d] font-sans overflow-hidden transition-colors duration-300">

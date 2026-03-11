@@ -2,9 +2,11 @@ import CardKitchen from "../components/CardKitchen";
 import HeaderKitchen from "../components/HeaderKitchen";
 import { ChefHat } from "lucide-react";
 import { useKitchen } from "../hook/useKitchen";
+import { useOrderNotifications } from "@/hooks/useOrderNotifications";
 
 export default function KitchenPage() {
   const { data: orders = [], isLoading, isError, error } = useKitchen();
+  useOrderNotifications();
 
   if (isLoading) {
     return (

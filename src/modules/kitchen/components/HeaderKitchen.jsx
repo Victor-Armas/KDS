@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import LogoutButton from "@/components/ui/LogoutButton";
 import { Clock, ChefHat, AlertTriangle, LogOut } from "lucide-react";
+import { useSettings } from "@/modules/admin/settings/hooks/useSettings";
 
 export default function HeaderKitchen({ orders }) {
+  const { data: settings } = useSettings();
+  const restaurantName = settings?.restaurant_name || "Cocina";
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -32,7 +35,7 @@ export default function HeaderKitchen({ orders }) {
         </div>
         <div>
           <h1 className="text-base font-black text-white tracking-tight leading-none">
-            Pantalla de Cocina
+            {restaurantName}
           </h1>
           <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mt-0.5">
             En preparación

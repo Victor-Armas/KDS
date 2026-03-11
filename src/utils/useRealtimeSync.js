@@ -1,36 +1,55 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/services/supabase";
 
-/**
- * Hook para sincronizar tablas de Supabase con React Query en tiempo real.
- * @param {string} table - Nombre de la tabla en Supabase.
- * @param {string[]} queryKey - La llave base de React Query que quieres invalidar.
- * @param {string} event - El evento a escuchar ('*', 'INSERT', 'UPDATE', 'DELETE').
- */
+let globalChannel = null;
+let isSubscribed = false;
+
+function getChannel() {
+  if (!globalChannel) {
+    globalChannel = supabase.channel("app-global");
+    isSubscribed = false;
+  }
+  return globalChannel;
+}
+
+function subscribeIfNeeded() {
+  if (isSubscribed) return;
+  isSubscribed = true;
+  setTimeout(() => {
+    globalChannel?.subscribe((status) => {
+      console.log("📡 Canal global:", status);
+      if (status === "CHANNEL_ERROR" || status === "CLOSED") {
+        globalChannel = null;
+        isSubscribed = false;
+      }
+    });
+  }, 500);
+}
+
 export const useRealtimeSync = (table, queryKeys, event = "*") => {
   const queryClient = useQueryClient();
+  const queryKeysRef = useRef(queryKeys);
 
   useEffect(() => {
-    const channel = supabase
-      .channel(`${table}-realtime-sync`)
-      .on("postgres_changes", { event, schema: "public", table }, () => {
-        // Convertimos a array si nos pasan solo una llave, para poder usar forEach
-        const keysToInvalidate = Array.isArray(queryKeys[0])
-          ? queryKeys
-          : [queryKeys];
+    const channel = getChannel();
 
+    channel.on(
+      "postgres_changes",
+      { event, schema: "public", table },
+      (payload) => {
+        console.log("🔥 Evento recibido:", table, payload);
+        const keysToInvalidate = Array.isArray(queryKeysRef.current[0])
+          ? queryKeysRef.current
+          : [queryKeysRef.current];
         keysToInvalidate.forEach((key) => {
-          queryClient.invalidateQueries({
-            queryKey: key,
-            exact: false,
-          });
+          queryClient.invalidateQueries({ queryKey: key, exact: false });
         });
-      })
-      .subscribe();
+      },
+    );
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [table, queryKeys, event, queryClient]);
+    subscribeIfNeeded();
+
+    return () => {};
+  }, [table, event, queryClient]);
 };

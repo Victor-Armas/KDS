@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Sparkles, Utensils } from "lucide-react";
-import { useRestaurantSettings } from "@/hooks/useRestaurantSettings";
+import { useSettings } from "@/modules/admin/settings/hooks/useSettings";
 
 export default function TicketFooter({
   cartTotal,
@@ -8,8 +8,12 @@ export default function TicketFooter({
   isSubmitting,
   confirmOrder,
 }) {
-  const { data: settings } = useRestaurantSettings();
+  const { data: settings } = useSettings();
   const isOpen = settings?.is_open ?? true;
+
+  useEffect(() => {
+    console.log("🏪 isOpen cambió:", isOpen);
+  }, [isOpen]);
   return (
     <div className="p-4 bg-black border-t border-white/10 shrink-0 shadow-[0_-20px_50px_rgba(0,0,0,0.4)]">
       <div className="flex justify-between items-end mb-8">

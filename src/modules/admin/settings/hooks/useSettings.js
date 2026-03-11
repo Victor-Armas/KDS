@@ -22,7 +22,10 @@ export function useSettings() {
     staleTime: 1000 * 60 * 5,
   });
 
-  useRealtimeSync("restaurant_settings", [["restaurant-settings"]]);
+  useRealtimeSync("restaurant_settings", [
+    ["restaurant-settings"],
+    ["online-restaurant-settings"],
+  ]);
 
   return query;
 }
@@ -88,6 +91,9 @@ export function useToggleOpen() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["restaurant-settings"] });
+      queryClient.invalidateQueries({
+        queryKey: ["online-restaurant-settings"],
+      });
       notify.success(
         data.is_open ? "¡Abierto!" : "¡Cerrado!",
         data.is_open

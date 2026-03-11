@@ -40,7 +40,7 @@ export const useRestaurantOpen = () => {
   return useQuery({
     queryKey: ["online-restaurant-settings"],
     queryFn: fetchRestaurantSettings,
-    staleTime: 1000 * 30,
-    refetchInterval: 1000 * 60,
+    staleTime: 1000 * 60 * 5,
+    // sin useRealtimeSync aquí
   });
 };

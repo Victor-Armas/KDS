@@ -14,12 +14,18 @@ import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import LogoutButton from "@/components/ui/LogoutButton";
 import TrackOrderModal from "../order/TrackOrderModal";
+import { useSettings } from "@/modules/admin/settings/hooks/useSettings";
 
 export default function OnlineHeader({ onOpenCart }) {
   const { totalItems } = useCart();
   const { user } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const [trackOpen, setTrackOpen] = useState(false);
+  const { data: settings } = useSettings();
+
+  const restaurantName = settings?.restaurant_name || "Nuestro Restaurante";
+  const tagline = settings?.tagline || "";
+  const initial = restaurantName.charAt(0).toUpperCase();
 
   return (
     <>
@@ -32,19 +38,23 @@ export default function OnlineHeader({ onOpenCart }) {
           >
             <div className="w-8 h-8 bg-chile rounded-xl flex items-center justify-center shadow-sm shadow-chile/30">
               <span className="text-white font-serif font-black text-sm">
-                S
+                {initial}
               </span>
             </div>
             <div className="hidden sm:block">
               <span className="text-lg font-serif font-bold text-charcoal dark:text-stone-100 group-hover:text-chile dark:group-hover:text-chile transition-colors">
-                Sabores <span className="text-chile">de México</span>
+                {restaurantName}
               </span>
+              {tagline && (
+                <p className="text-[10px] text-charcoal/40 dark:text-white/30 leading-none">
+                  {tagline}
+                </p>
+              )}
             </div>
           </Link>
 
           {/* Actions */}
           <div className="flex items-center gap-1.5">
-            {/* Dark mode toggle */}
             <button
               onClick={toggleTheme}
               className="p-2.5 rounded-xl text-charcoal/40 hover:text-charcoal dark:text-stone-500 dark:hover:text-stone-100 hover:bg-cream dark:hover:bg-stone-800 transition-all"
@@ -53,7 +63,6 @@ export default function OnlineHeader({ onOpenCart }) {
               {isDark ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            {/* Auth + track order */}
             {user ? (
               <>
                 <Link
@@ -69,23 +78,19 @@ export default function OnlineHeader({ onOpenCart }) {
               </>
             ) : (
               <>
-                {/* Rastrear pedido — visible solo para no logueados */}
                 <button
                   onClick={() => setTrackOpen(true)}
                   className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-charcoal/60 hover:text-charcoal dark:text-stone-500 dark:hover:text-stone-100 hover:bg-cream dark:hover:bg-stone-800 transition-all"
-                  title="Rastrear pedido"
                 >
                   <MapPin size={15} />
                   Mi pedido
                 </button>
-                {/* Mobile icon only */}
                 <button
                   onClick={() => setTrackOpen(true)}
                   className="sm:hidden p-2.5 rounded-xl text-charcoal/40 hover:text-charcoal dark:text-stone-500 dark:hover:text-stone-100 hover:bg-cream dark:hover:bg-stone-800 transition-all"
                 >
                   <MapPin size={18} />
                 </button>
-
                 <Link
                   to="/login"
                   className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-charcoal/60 hover:text-charcoal dark:text-stone-500 dark:hover:text-stone-100 hover:bg-cream dark:hover:bg-stone-800 transition-all"
@@ -98,7 +103,6 @@ export default function OnlineHeader({ onOpenCart }) {
 
             <div className="w-px h-5 bg-cream dark:bg-stone-800 mx-0.5" />
 
-            {/* Cart */}
             <button
               onClick={onOpenCart}
               className="relative flex items-center gap-2 bg-chile text-white px-4 py-2.5 rounded-2xl font-bold text-sm hover:bg-chile/90 active:scale-95 transition-all shadow-md shadow-chile/25"

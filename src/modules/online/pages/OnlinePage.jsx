@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMenu, useCategories } from "../hooks/useMenu";
+import { useMenu, useCategories, useRestaurantOpen } from "../hooks/useMenu";
 import { useCreateOrder } from "../hooks/useOrder";
 import { useCart } from "../context/CartContext";
 import OnlineHeader from "../components/layout/OnlineHeader";
@@ -9,6 +9,7 @@ import OrderFormModal from "../components/order/OrderFormModal";
 import OrderConfirmation from "../components/order/OrderConfirmation";
 import CategoryTabs from "../components/layout/menu/CategoryTabs";
 import ProductGrid from "../components/layout/menu/ProductGrid";
+import { useSettings } from "@/modules/admin/settings/hooks/useSettings";
 
 export default function OnlinePage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -21,6 +22,13 @@ export default function OnlinePage() {
   const { data: categories = [], isLoading: loadingCats } = useCategories();
   const { mutateAsync: createOrder, isPending } = useCreateOrder();
   const { items, clearCart } = useCart();
+
+  const { data: settings } = useSettings();
+  const restaurantName = settings?.restaurant_name || "Nuestro Restaurante";
+  const tagline = settings?.tagline || "...";
+
+  const { data: restaurantStatus } = useRestaurantOpen(); // ya tiene refetchInterval de 60s
+  const isOpen = restaurantStatus?.is_open ?? true;
 
   const handleCheckout = () => {
     setCartOpen(false);
@@ -55,16 +63,30 @@ export default function OnlinePage() {
         <div className="relative max-w-6xl mx-auto px-4 md:px-8 py-16 md:py-24 flex flex-col md:flex-row items-center gap-10">
           {/* Text */}
           <div className="flex-1 text-center md:text-left">
-            <p className="text-mostaza text-xs font-black uppercase tracking-[0.3em] mb-4">
-              🌮 Cocina Mexicana Auténtica
-            </p>
+            {isOpen ? (
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                </span>
+                <span className="text-emerald-600 text-xs font-black uppercase tracking-[0.3em]">
+                  Abierto — recibiendo pedidos
+                </span>
+              </div>
+            ) : (
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+                <span className="text-red-400 text-xs font-black uppercase tracking-[0.3em]">
+                  Cerrado por el momento
+                </span>
+              </div>
+            )}
+            {/* ← y estas dos */}
             <h1 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight mb-4">
-              El sabor de <span className="text-chile italic">México</span> en
-              tu puerta
+              {restaurantName}
             </h1>
             <p className="text-stone-400 text-base md:text-lg max-w-md mx-auto md:mx-0 leading-relaxed mb-8">
-              Ordena tus tacos, tortas y bebidas favoritas. Los preparamos con
-              amor y te los llevamos fresquecitos.
+              {tagline}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
               <a
